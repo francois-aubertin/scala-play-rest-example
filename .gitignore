@@ -2,6 +2,8 @@ logs
 project/project
 project/target
 target
+.target
+bin
 tmp
 .history
 dist
@@ -11,5 +13,6 @@ dist
 /.idea_modules
 /.classpath
 /.project
+/.cache
 /RUNNING_PID
 /.settings
