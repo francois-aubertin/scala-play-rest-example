@@ -4,7 +4,6 @@ import domain.user.User
 import repositories.user.UserRepositoryComponent
 
 trait UserServiceComponent {
-    self: UserRepositoryComponent =>
     
     val userService: UserService
     

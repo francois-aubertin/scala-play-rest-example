@@ -22,5 +22,7 @@ class UserServiceTest extends UserServiceComponentImpl
 }
 
 trait UserRepositoryMockComponent extends UserRepositoryComponent {
+    
     override val userRepository = mock(classOf[UserRepository])
+    
 }

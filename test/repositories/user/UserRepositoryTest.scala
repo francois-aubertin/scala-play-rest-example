@@ -9,7 +9,7 @@ class UserRepositoryTest {
     
     @Test
     def crud() {
-        println("Test HEY HEY HEY")
+        // TODO
     }
     
 }

@@ -1,1 +1,6 @@
 RESTful API for a wealth management application written in Scala (using the Play framework).
+
+To start the application:
+    play run
+
+And then http://localhost:9000
