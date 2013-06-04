@@ -6,7 +6,6 @@ import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import services.user.UserServiceComponent
 import domain.user.User
-import domain.asset.Asset
 
 trait UserController extends Controller {
     self: UserServiceComponent =>
@@ -18,7 +17,7 @@ trait UserController extends Controller {
         unmarshalUserResource(request, (resource: UserResource) => {
             val user = User(Option.empty,
                             resource.email)
-            userService.saveUser(user)
+            userService.createUser(user)
             Created
         })
     }
@@ -26,9 +25,8 @@ trait UserController extends Controller {
     def updateUser(id: Long) = Action(parse.json) {request =>
         unmarshalUserResource(request, (resource: UserResource) => {
             val user = User(Option(id),
-                            resource.email,
-                            Seq())
-            userService.saveUser(user)
+                            resource.email)
+            userService.updateUser(user)
             NoContent
         })
     }

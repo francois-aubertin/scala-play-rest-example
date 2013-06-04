@@ -8,7 +8,11 @@ trait UserRepositoryComponent {
     val userRepository: UserRepository
     
     trait UserRepository {
-        def saveUser(user: User): User
+        
+        def createUser(user: User): User
+        
+        def updateUser(user: User)
+        
     }
 }
 
@@ -17,12 +21,18 @@ trait UserRepositoryComponentImpl extends UserRepositoryComponent {
     
     class UserRepositoryImpl extends UserRepository {
         
-        val users = new ConcurrentHashMap
+        val users = new ConcurrentHashMap[Long, User]
         val idSequence = new AtomicLong(0)
         
-        override def saveUser(user: User): User = {
-            val id = user.id
-            null
+        override def createUser(user: User): User = {
+            val newId = idSequence.incrementAndGet()
+            val createdUser = user.copy(id = Option(newId))
+            users.put(newId, createdUser)
+            createdUser
+        }
+        
+        override def updateUser(user: User) {
+            users.put(user.id.get, user)
         }
         
     }

@@ -8,7 +8,11 @@ trait UserServiceComponent {
     val userService: UserService
     
     trait UserService {
-        def saveUser(user: User): User
+        
+        def createUser(user: User): User
+        
+        def updateUser(user: User)
+        
     }
 
 }
@@ -20,8 +24,13 @@ trait UserServiceComponentImpl extends UserServiceComponent {
     
     class UserServiceImpl extends UserService {
         
-        override def saveUser(user: User): User = {
-            userRepository.saveUser(user)
+        override def createUser(user: User): User = {
+            userRepository.createUser(user)
         }
+        
+        override def updateUser(user: User) {
+            userRepository.updateUser(user)
+        }
+        
     }
 }

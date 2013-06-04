@@ -30,7 +30,7 @@ class UserControllerTest {
         val hey: Result = userController.createUser(request)
         
         assertEquals(201, status(hey))
-        verify(userController.userService).saveUser(User(Option.empty, email))
+        verify(userController.userService).createUser(User(Option.empty, email))
     }
     
     @Test

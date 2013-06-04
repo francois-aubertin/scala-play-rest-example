@@ -1,4 +1,4 @@
-RESTful API for a fictive wealth management application written in Scala (using the Play framework).
+RESTful API written in Scala, using the Play Framework.
 
 To start the application:
     play run

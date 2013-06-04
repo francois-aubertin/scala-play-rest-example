@@ -9,14 +9,13 @@ class UserServiceTest extends UserServiceComponentImpl
                       with UserRepositoryMockComponent {
     
     @Test
-    def saveUser() {
+    def createUser() {
         val user = User(Option(1L),
-                        "test@test.com",
-                        Seq())
+                        "test@test.com")
         
-        userService.saveUser(user)
+        userService.createUser(user)
         
-        verify(userRepository).saveUser(user)
+        verify(userRepository).createUser(user)
     }
 
 }
