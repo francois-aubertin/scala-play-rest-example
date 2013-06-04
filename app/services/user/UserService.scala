@@ -13,6 +13,10 @@ trait UserServiceComponent {
         
         def updateUser(user: User)
         
+        def tryFindById(id: Long): Option[User]
+        
+        def delete(id: Long)
+    
     }
 
 }
@@ -30,6 +34,14 @@ trait UserServiceComponentImpl extends UserServiceComponent {
         
         override def updateUser(user: User) {
             userRepository.updateUser(user)
+        }
+        
+        override def tryFindById(id: Long): Option[User] = {
+            userRepository.tryFindById(id)
+        }
+        
+        override def delete(id: Long) {
+            userRepository.delete(id)
         }
         
     }
