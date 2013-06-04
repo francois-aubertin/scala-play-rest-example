@@ -17,8 +17,7 @@ trait UserController extends Controller {
     def createUser = Action(parse.json) {request =>
         unmarshalUserResource(request, (resource: UserResource) => {
             val user = User(Option.empty,
-                            resource.email,
-                            Seq())
+                            resource.email)
             userService.saveUser(user)
             Created
         })
