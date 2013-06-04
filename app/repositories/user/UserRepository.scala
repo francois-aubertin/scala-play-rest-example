@@ -13,6 +13,10 @@ trait UserRepositoryComponent {
         
         def updateUser(user: User)
         
+        def tryFindById(id: Long): Option[User]
+        
+        def delete(id: Long)
+        
     }
 }
 
@@ -33,6 +37,14 @@ trait UserRepositoryComponentImpl extends UserRepositoryComponent {
         
         override def updateUser(user: User) {
             users.put(user.id.get, user)
+        }
+        
+        override def tryFindById(id: Long): Option[User] = {
+            Option(users.get(id))
+        }
+        
+        override def delete(id: Long) {
+            users.remove(id)
         }
         
     }
