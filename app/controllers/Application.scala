@@ -10,8 +10,8 @@ object Application extends UserController
                    with UserServiceComponentImpl
                    with UserRepositoryComponentImpl {
 
-    def index = Action {
-        Ok(views.html.index("Your new application is ready."))
-    }
+  def index = Action {
+    Ok(views.html.index("Your new application is ready."))
+  }
 
 }

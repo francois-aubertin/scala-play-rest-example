@@ -1,6 +1,11 @@
 RESTful API written in Scala, using the Play Framework.
 
 To start the application:
-    play run
+    ./activator run
 
 And then http://localhost:9000
+
+To use the REST API:
+	curl -X POST http://localhost:9000/users -H "Content-Type: application/json" -d "{\"email\": \"test@test.com\"}"
+	curl -X GET http://localhost:9000/users/1 
+	
