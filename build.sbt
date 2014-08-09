@@ -12,3 +12,5 @@ libraryDependencies ++= Seq(
   cache,
   ws
 )
+
+libraryDependencies += "org.mockito" % "mockito-core" % "1.9.5" % "test"
