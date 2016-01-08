@@ -14,6 +14,8 @@ trait UserServiceComponent {
         def updateUser(user: User)
         
         def tryFindById(id: Long): Option[User]
+
+        def tryFindByEmail(email: String): Option[User]
         
         def delete(id: Long)
     
@@ -38,6 +40,10 @@ trait UserServiceComponentImpl extends UserServiceComponent {
         
         override def tryFindById(id: Long): Option[User] = {
             userRepository.tryFindById(id)
+        }
+
+        override def tryFindByEmail(email: String): Option[User] = {
+            userRepository.tryFindByEmail(email)
         }
         
         override def delete(id: Long) {

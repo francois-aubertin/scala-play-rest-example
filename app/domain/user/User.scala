@@ -1,4 +1,4 @@
 package domain.user
 
-case class User(val id: Option[Long],
-                val email: String)
+case class User(id: Option[Long],
+                email: String)
