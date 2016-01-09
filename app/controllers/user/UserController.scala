@@ -29,21 +29,19 @@ trait UserController extends Controller {
     }
                                            
     def createUser = Action(parse.json) {request =>
-        unmarshalUserResource(request, (resource: UserResource) => {
-            val user = User(Option.empty,
-                            resource.email)
+        unmarshalJsValue(request) { resource: UserResource =>
+            val user = User(Option.empty, resource.email)
             userService.createUser(user)
             Created
-        })
+        }
     }
     
     def updateUser(id: Long) = Action(parse.json) {request =>
-        unmarshalUserResource(request, (resource: UserResource) => {
-            val user = User(Option(id),
-                            resource.email)
+        unmarshalJsValue(request) { resource: UserResource =>
+            val user = User(Option(id), resource.email)
             userService.updateUser(user)
             NoContent
-        })
+        }
     }
     
     def findUserById(id: Long) = Action {
@@ -59,10 +57,9 @@ trait UserController extends Controller {
         userService.delete(id)
         NoContent
     }
-    
-    private def unmarshalUserResource(request: Request[JsValue],
-                                      block: (UserResource) => Result): Result =
-        request.body.validate[UserResource].fold(
+
+    def unmarshalJsValue[R](request: Request[JsValue])(block: R => Result)(implicit rds : Reads[R]): Result =
+        request.body.validate[R](rds).fold(
             valid = block,
             invalid = e => {
                 val error = e.mkString
