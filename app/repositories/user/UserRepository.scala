@@ -14,6 +14,8 @@ trait UserRepositoryComponent {
         def updateUser(user: User)
         
         def tryFindById(id: Long): Option[User]
+
+        def tryFindByEmail(email: String): Option[User]
         
         def delete(id: Long)
         
@@ -41,6 +43,11 @@ trait UserRepositoryComponentImpl extends UserRepositoryComponent {
         
         override def tryFindById(id: Long): Option[User] = {
             Option(users.get(id))
+        }
+
+        override def tryFindByEmail(email: String): Option[User] = {
+            import scala.collection.JavaConversions._
+            users.values().find(_.email == email)
         }
         
         override def delete(id: Long) {

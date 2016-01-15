@@ -3,14 +3,20 @@ package controllers.user
 import play.api._
 import play.api.mvc._
 import play.api.libs.json._
+import play.api.libs.json.Reads._
 import play.api.libs.functional.syntax._
 import services.user.UserServiceComponent
 import domain.user.User
 
 trait UserController extends Controller {
-    self: UserServiceComponent =>
-    
-    implicit val userReads = (__ \ "email").read[String]
+    self: UserServiceComponent =>0
+
+    def emailAlreadyExists(implicit reads: Reads[String]) =
+        Reads[String](js => reads.reads(js).flatMap { e =>
+          userService.tryFindByEmail(e).map(_ => JsError("error.custom.emailAlreadyExists")).getOrElse(JsSuccess(e))
+        })
+
+    implicit val userReads = (__ \ "email").read[String](email andKeep emailAlreadyExists)
                                            .map(resource => UserResource(resource))
     
     implicit val userWrites = new Writes[User] {
@@ -23,21 +29,19 @@ trait UserController extends Controller {
     }
                                            
     def createUser = Action(parse.json) {request =>
-        unmarshalUserResource(request, (resource: UserResource) => {
-            val user = User(Option.empty,
-                            resource.email)
+        unmarshalJsValue(request) { resource: UserResource =>
+            val user = User(Option.empty, resource.email)
             userService.createUser(user)
             Created
-        })
+        }
     }
     
     def updateUser(id: Long) = Action(parse.json) {request =>
-        unmarshalUserResource(request, (resource: UserResource) => {
-            val user = User(Option(id),
-                            resource.email)
+        unmarshalJsValue(request) { resource: UserResource =>
+            val user = User(Option(id), resource.email)
             userService.updateUser(user)
             NoContent
-        })
+        }
     }
     
     def findUserById(id: Long) = Action {
@@ -53,19 +57,17 @@ trait UserController extends Controller {
         userService.delete(id)
         NoContent
     }
-    
-    private def unmarshalUserResource(request: Request[JsValue],
-                                      block: (UserResource) => Result): Result = {
-        request.body.validate[UserResource].fold(
+
+    def unmarshalJsValue[R](request: Request[JsValue])(block: R => Result)(implicit rds : Reads[R]): Result =
+        request.body.validate[R](rds).fold(
             valid = block,
-            invalid = (e => {
+            invalid = e => {
                 val error = e.mkString
                 Logger.error(error)
                 BadRequest(error)
-            })
+            }
         )
-    }
 
 }
 
-case class UserResource (val email: String)
+case class UserResource(email: String)
